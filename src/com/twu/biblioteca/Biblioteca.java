@@ -55,5 +55,9 @@ public class Biblioteca {
 
         return null;
     }
+
+    public void returnBook() {
+
+    }
 }
 

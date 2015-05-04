@@ -85,4 +85,13 @@ public class BibliotecaTest {
 
         verify(printStream).println(contains("That book is not available."));
     }
+
+    @Test
+    public void shouldReturnSelectedBook() {
+        when(userInputStream.getUserInput()).thenReturn("Returned Book");
+
+        biblioteca.returnBook();
+
+        verify(printStream).println(contains("Returned Book"));
+    }
 }
