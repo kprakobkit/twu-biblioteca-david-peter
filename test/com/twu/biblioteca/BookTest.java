@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -11,17 +12,26 @@ import static org.junit.Assert.assertThat;
  */
 public class BookTest {
 
+    private Book book;
+
+    @Before
+    public void setUp() throws Exception {
+        book = new Book("Title", "Author", "Year");
+
+    }
+
     @Test
     public void toStringShouldPrintTitleAuthorAndYearPublished() {
-        Book book = new Book("Title", "Author", "Year");
-
         assertThat(book.toString(), allOf(containsString("Title"), containsString("Author"), containsString("Year")));
     }
 
     @Test
     public void toStringShouldFormatOutputToUseColumns() {
-        Book book = new Book("Title", "Author", "Year");
-
         assertEquals(book.toString(), "Title                                             |Author              |Year");
+    }
+
+    @Test
+    public void shouldCompareBooksByTitle() {
+        assertEquals(book, new Book("Title", "Author", "Year"));
     }
 }

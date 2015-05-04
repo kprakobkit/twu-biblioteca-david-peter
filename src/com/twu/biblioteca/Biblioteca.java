@@ -1,10 +1,6 @@
 package com.twu.biblioteca;
 
-import org.mockito.internal.util.collections.ArrayUtils;
-
 import java.io.PrintStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,12 +10,13 @@ public class Biblioteca {
     private PrintStream printStream;
     private List<Book> bookList;
     private UserInputStream userInputStream;
-    private List<Book> checkedOutBooks = new ArrayList<Book>();
+    private List<Book> checkedOutBooks;
 
-    public Biblioteca(PrintStream printStream, List<Book> books, UserInputStream userInputStream) {
+    public Biblioteca(PrintStream printStream, List<Book> books, UserInputStream userInputStream, List<Book> checkedOutBooks) {
         this.printStream = printStream;
         this.bookList = books;
         this.userInputStream = userInputStream;
+        this.checkedOutBooks = checkedOutBooks;
     }
 
     public void listBooks() {
@@ -31,14 +28,32 @@ public class Biblioteca {
     }
 
     public void checkoutBook() {
-        printStream.println("Input the book do you would like to checkout?");
-        String bookNumber = userInputStream.getUserInput();
+        String bookTitle = userInputStream.getUserInput();
+        Book book;
 
-        if (bookNumber.matches("^[1-9]+")) {
-            Book checkedOutBook = bookList.remove(Integer.parseInt(bookNumber) - 1);
-            checkedOutBooks.add(checkedOutBook);
-            printStream.println("Thank you! Enjoy the book");
-        };
+        if ((book = retrieveBookByTitle(bookTitle)) != null) {
+            moveBookToCheckedOutBooks(book);
+            printStream.println("Thank you! Enjoy the book.");
+        } else {
+            printStream.println("That book is not available.");
+        }
+    }
+
+    private void moveBookToCheckedOutBooks(Book book) {
+        Book checkedOutBook = bookList.remove(bookList.indexOf(book));
+        checkedOutBooks.add(checkedOutBook);
+    }
+
+    private Book retrieveBookByTitle(String bookTitle) {
+        Book tempBook = new Book(bookTitle, "", "");
+
+        for (Book book : bookList) {
+            if (book.equals(tempBook)) {
+                return book;
+            }
+        }
+
+        return null;
     }
 }
 

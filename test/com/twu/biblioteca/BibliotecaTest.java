@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.PrintStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.allOf;
@@ -21,6 +22,7 @@ public class BibliotecaTest {
     private ArrayList<Book> books;
     private Book book1;
     private UserInputStream userInputStream;
+    private ArrayList checkedOutBooks;
 
     @Before
     public void setUp() {
@@ -29,7 +31,8 @@ public class BibliotecaTest {
         book1 = new Book("Title", "Author", "Year");
         books = new ArrayList<Book>();
         books.add(book1);
-        biblioteca = new Biblioteca(printStream, books, userInputStream);
+        checkedOutBooks = mock(ArrayList.class);
+        biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutBooks);
     }
 
     @Test
@@ -48,7 +51,7 @@ public class BibliotecaTest {
 
     @Test
     public void shouldGetUserInputOnCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("1");
+        when(userInputStream.getUserInput()).thenReturn("Title");
 
         biblioteca.checkoutBook();
 
@@ -56,17 +59,8 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldAskUserWhatBookTheyWantToCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("1");
-
-        biblioteca.checkoutBook();
-
-        verify(printStream).println("Input the book do you would like to checkout?");
-    }
-
-    @Test
     public void shouldCheckoutSelectedBook() {
-        when(userInputStream.getUserInput()).thenReturn("1");
+        when(userInputStream.getUserInput()).thenReturn("Title");
 
         biblioteca.checkoutBook();
         biblioteca.listBooks();
@@ -76,7 +70,7 @@ public class BibliotecaTest {
 
     @Test
     public void shouldDisplaySuccessMessageOnSuccessfulCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("1");
+        when(userInputStream.getUserInput()).thenReturn("Title");
 
         biblioteca.checkoutBook();
 
@@ -85,7 +79,7 @@ public class BibliotecaTest {
 
     @Test
     public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("3");
+        when(userInputStream.getUserInput()).thenReturn("Foo");
 
         biblioteca.checkoutBook();
 

@@ -19,4 +19,20 @@ public class Book {
     public String toString() {
         return String.format("%-50s|%-20s|%-4s", title, author, year);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        return !(title != null ? !title.equals(book.title) : book.title != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return title != null ? title.hashCode() : 0;
+    }
 }
