@@ -75,5 +75,8 @@ public class Biblioteca {
             counter++;
         }
     }
+
+    public void checkoutMovie() {
+    }
 }
 
