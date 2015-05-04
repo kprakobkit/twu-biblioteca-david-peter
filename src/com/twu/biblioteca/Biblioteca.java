@@ -31,57 +31,36 @@ public class Biblioteca {
         String bookTitle = userInputStream.getUserInput();
         Book book;
 
-        if ((book = retrieveBookByTitleFromBookList(bookTitle)) != null) {
-            moveBookToCheckedOutBooks(book);
+        if ((book = retrieveBookByTitleFromList(bookTitle, bookList)) != null) {
+            moveBookBetweenLists(book, bookList, checkedOutBooks);
             printStream.println("Thank you! Enjoy the book.");
         } else {
             printStream.println("That book is not available.");
         }
     }
 
-    private void moveBookToCheckedOutBooks(Book book) {
-        Book checkedOutBook = bookList.remove(bookList.indexOf(book));
-        checkedOutBooks.add(checkedOutBook);
-    }
-
-    private Book retrieveBookByTitleFromBookList(String bookTitle) {
-        Book tempBook = new Book(bookTitle, "", "");
-
-        for (Book book : bookList) {
-            if (book.equals(tempBook)) {
-                return book;
-            }
-        }
-
-        return null;
-    }
-
     public void returnBook() {
         String bookTitle = userInputStream.getUserInput();
         Book book;
 
-        if ((book = retrieveBookByTitleFromCheckedoutList(bookTitle)) != null) {
-            moveBookToBookList(book);
+        if ((book = retrieveBookByTitleFromList(bookTitle, checkedOutBooks)) != null) {
+            moveBookBetweenLists(book, checkedOutBooks, bookList);
             printStream.println("Thank you for returning the book.");
         } else {
             printStream.println("That is not a valid book to return.");
         }
     }
 
-    private void moveBookToBookList(Book book) {
-        Book returnedBook = checkedOutBooks.remove(checkedOutBooks.indexOf(book));
-        bookList.add(returnedBook);
+    private void moveBookBetweenLists(Book book, List<Book> fromList, List<Book> toList) {
+        Book checkedOutBook = fromList.remove(fromList.indexOf(book));
+        toList.add(checkedOutBook);
     }
 
-    private Book retrieveBookByTitleFromCheckedoutList(String bookTitle) {
+    private Book retrieveBookByTitleFromList(String bookTitle, List<Book> bookList) {
         Book tempBook = new Book(bookTitle, "", "");
 
-        if (checkedOutBooks.size() == 0 ) return null;
-
-        for (Book book : checkedOutBooks) {
-            if (book.equals(tempBook)) {
-                return book;
-            }
+        for (Book book : bookList) {
+            if (book.equals(tempBook)) return book;
         }
 
         return null;
