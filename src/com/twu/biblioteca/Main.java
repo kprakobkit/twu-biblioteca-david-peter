@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.commands.*;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,9 +10,11 @@ import java.util.Map;
 
 public class Main {
 
+    private static final PrintStream out = System.out;
+
     public static void main(String[] args) {
-        Biblioteca biblioteca = new Biblioteca(System.out, books(), new UserInputStream(), new ArrayList<LibraryItem>(), movies());
-        Menu menu = new Menu(System.out, biblioteca, new UserInputStream(), initializeMapMenu(biblioteca));
+        Biblioteca biblioteca = new Biblioteca(out, books(), new UserInputStream(), new ArrayList<LibraryItem>(), movies());
+        Menu menu = new Menu(out, biblioteca, new UserInputStream(), initializeMapMenu(biblioteca));
 
         menu.start();
     }
@@ -28,9 +31,10 @@ public class Main {
     private static Map<String, Command> initializeMapMenu(Biblioteca biblioteca) {
         Map<String, Command> mapMenuCommand = new HashMap<String, Command>();
         mapMenuCommand.put("List Books", new ListBooksCommand(biblioteca));
-        mapMenuCommand.put("Checkout Book", new CheckOutBookCommand(biblioteca, System.out));
-        mapMenuCommand.put("Return Book", new ReturnBookCommand(biblioteca, System.out));
+        mapMenuCommand.put("Checkout Book", new CheckOutBookCommand(biblioteca, out));
+        mapMenuCommand.put("Return Book", new ReturnBookCommand(biblioteca, out));
         mapMenuCommand.put("List Movies", new ListMoviesCommand(biblioteca));
+        mapMenuCommand.put("Checkout Movie", new CheckOutMovieCommand(biblioteca, out));
 
         return mapMenuCommand;
     }
