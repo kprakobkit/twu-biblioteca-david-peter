@@ -39,5 +39,4 @@ public class CheckOutBookCommandTest {
 
         verify(printStream).println("Input the book you would like to checkout? - please enter the title of the book.");
     }
-
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
@@ -23,15 +24,18 @@ public class BibliotecaTest {
     private Book book1;
     private UserInputStream userInputStream;
     private ArrayList checkedOutBooks;
+    private Book book2;
 
     @Before
     public void setUp() {
         userInputStream = mock(UserInputStream.class);
         printStream = mock(PrintStream.class);
         book1 = new Book("Title", "Author", "Year");
+        book2 = new Book("Title2", "Author", "Year");
         books = new ArrayList<Book>();
         books.add(book1);
-        checkedOutBooks = mock(ArrayList.class);
+        checkedOutBooks = new ArrayList<Book>();
+        checkedOutBooks.add(book2);
         biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutBooks);
     }
 
@@ -63,9 +67,8 @@ public class BibliotecaTest {
         when(userInputStream.getUserInput()).thenReturn("Title");
 
         biblioteca.checkoutBook();
-        biblioteca.listBooks();
 
-        verify(printStream, never()).println(contains("Title"));
+        assertTrue(checkedOutBooks.contains(book1));
     }
 
     @Test
@@ -88,10 +91,28 @@ public class BibliotecaTest {
 
     @Test
     public void shouldReturnSelectedBook() {
-        when(userInputStream.getUserInput()).thenReturn("Returned Book");
+        when(userInputStream.getUserInput()).thenReturn("Title2");
 
         biblioteca.returnBook();
 
-        verify(printStream).println(contains("Returned Book"));
+        assertTrue(books.contains(book2));
+    }
+
+    @Test
+    public void shouldDisplaySuccessMessageOnSuccessfulReturn() {
+        when(userInputStream.getUserInput()).thenReturn("Title2");
+
+        biblioteca.returnBook();
+
+        verify(printStream).println(contains("Thank you for returning the book."));
+    }
+
+    @Test
+    public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulReturn() {
+        when(userInputStream.getUserInput()).thenReturn("Foo");
+
+        biblioteca.returnBook();
+
+        verify(printStream).println(contains("That is not a valid book to return."));
     }
 }

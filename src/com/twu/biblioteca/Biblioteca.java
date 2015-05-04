@@ -31,7 +31,7 @@ public class Biblioteca {
         String bookTitle = userInputStream.getUserInput();
         Book book;
 
-        if ((book = retrieveBookByTitle(bookTitle)) != null) {
+        if ((book = retrieveBookByTitleFromBookList(bookTitle)) != null) {
             moveBookToCheckedOutBooks(book);
             printStream.println("Thank you! Enjoy the book.");
         } else {
@@ -44,7 +44,7 @@ public class Biblioteca {
         checkedOutBooks.add(checkedOutBook);
     }
 
-    private Book retrieveBookByTitle(String bookTitle) {
+    private Book retrieveBookByTitleFromBookList(String bookTitle) {
         Book tempBook = new Book(bookTitle, "", "");
 
         for (Book book : bookList) {
@@ -57,7 +57,34 @@ public class Biblioteca {
     }
 
     public void returnBook() {
+        String bookTitle = userInputStream.getUserInput();
+        Book book;
 
+        if ((book = retrieveBookByTitleFromCheckedoutList(bookTitle)) != null) {
+            moveBookToBookList(book);
+            printStream.println("Thank you for returning the book.");
+        } else {
+            printStream.println("That is not a valid book to return.");
+        }
+    }
+
+    private void moveBookToBookList(Book book) {
+        Book returnedBook = checkedOutBooks.remove(checkedOutBooks.indexOf(book));
+        bookList.add(returnedBook);
+    }
+
+    private Book retrieveBookByTitleFromCheckedoutList(String bookTitle) {
+        Book tempBook = new Book(bookTitle, "", "");
+
+        if (checkedOutBooks.size() == 0 ) return null;
+
+        for (Book book : checkedOutBooks) {
+            if (book.equals(tempBook)) {
+                return book;
+            }
+        }
+
+        return null;
     }
 }
 

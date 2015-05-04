@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.commands.CheckOutBookCommand;
 import com.twu.biblioteca.commands.Command;
 import com.twu.biblioteca.commands.ListBooksCommand;
+import com.twu.biblioteca.commands.ReturnBookCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class Main {
         Map<String, Command> mapMenuCommand = new HashMap<String, Command>();
         mapMenuCommand.put("List Books", new ListBooksCommand(biblioteca));
         mapMenuCommand.put("Checkout Book", new CheckOutBookCommand(biblioteca, System.out));
+        mapMenuCommand.put("Return Book", new ReturnBookCommand(biblioteca, System.out));
 
         return mapMenuCommand;
     }

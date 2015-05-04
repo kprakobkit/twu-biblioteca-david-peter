@@ -4,6 +4,8 @@ import com.twu.biblioteca.Biblioteca;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.PrintStream;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -14,11 +16,13 @@ public class ReturnBookCommandTest {
 
     private ReturnBookCommand returnBookCommand;
     private Biblioteca biblioteca;
+    private PrintStream printStream;
 
     @Before
     public void setUp() throws Exception {
         biblioteca = mock(Biblioteca.class);
-        returnBookCommand = new ReturnBookCommand(biblioteca);
+        printStream = mock(PrintStream.class);
+        returnBookCommand = new ReturnBookCommand(biblioteca, printStream);
     }
 
     @Test
@@ -26,5 +30,11 @@ public class ReturnBookCommandTest {
         returnBookCommand.execute();
 
         verify(biblioteca).returnBook();
+    }
+    @Test
+    public void shouldAskUserWhatBookToReturn() {
+        returnBookCommand.execute();
+
+        verify(printStream).println("What book are you returning? - please enter the title of the book.");
     }
 }
