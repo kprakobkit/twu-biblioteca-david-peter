@@ -33,7 +33,7 @@ public class Biblioteca {
         String bookTitle = userInputStream.getUserInput();
         LibraryItem book;
 
-        if ((book = retrieveBookByTitleFromList(bookTitle, bookList)) != null) {
+        if ((book = retrieveLibraryItemByTitleFromList(bookTitle, bookList)) != null) {
             moveBookBetweenLists(book, bookList, checkedOutLibraryItems);
             printStream.println("Thank you! Enjoy the book.");
         } else {
@@ -45,7 +45,7 @@ public class Biblioteca {
         String bookTitle = userInputStream.getUserInput();
         LibraryItem book;
 
-        if ((book = retrieveBookByTitleFromList(bookTitle, checkedOutLibraryItems)) != null) {
+        if ((book = retrieveLibraryItemByTitleFromList(bookTitle, checkedOutLibraryItems)) != null) {
             moveBookBetweenLists(book, checkedOutLibraryItems, bookList);
             printStream.println("Thank you for returning the book.");
         } else {
@@ -58,11 +58,12 @@ public class Biblioteca {
         toList.add(checkedOutBook);
     }
 
-    private LibraryItem retrieveBookByTitleFromList(String bookTitle, List<LibraryItem> bookList) {
-        Book tempBook = new Book(bookTitle, "", "");
+    private LibraryItem retrieveLibraryItemByTitleFromList(String itemTitle, List<LibraryItem> libraryItemList) {
+        LibraryItem itemToRetrieve = new Book (itemTitle, "", "") {
+        };
 
-        for (LibraryItem book : bookList) {
-            if (book.equals(tempBook)) return book;
+        for (LibraryItem libraryItem : libraryItemList) {
+            if (libraryItem.equals(itemToRetrieve)) return libraryItem;
         }
 
         return null;
@@ -77,6 +78,15 @@ public class Biblioteca {
     }
 
     public void checkoutMovie() {
+        String movieTitle = userInputStream.getUserInput();
+        LibraryItem movie;
+
+        if ((movie = retrieveLibraryItemByTitleFromList(movieTitle, movieList)) != null) {
+            moveBookBetweenLists(movie, movieList, checkedOutLibraryItems);
+            printStream.println("Thank you! Enjoy the movie.");
+        } else {
+            printStream.println("The movie is not available.");
+        }
     }
 }
 

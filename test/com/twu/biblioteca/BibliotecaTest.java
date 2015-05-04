@@ -82,7 +82,7 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldDisplaySuccessMessageOnSuccessfulCheckout() {
+    public void shouldDisplaySuccessMessageOnSuccessfulBookCheckout() {
         when(userInputStream.getUserInput()).thenReturn("Title");
 
         biblioteca.checkoutBook();
@@ -91,7 +91,7 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulCheckout() {
+    public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulBookCheckout() {
         when(userInputStream.getUserInput()).thenReturn("Foo");
 
         biblioteca.checkoutBook();
@@ -140,5 +140,23 @@ public class BibliotecaTest {
         biblioteca.checkoutMovie();
 
         assertTrue(checkedOutLibraryItems.contains(movie1));
+    }
+
+    @Test
+    public void shouldDisplaySuccessMessageOnSuccessfulMovieCheckout() {
+        when(userInputStream.getUserInput()).thenReturn("Movie1");
+
+        biblioteca.checkoutMovie();
+
+        verify(printStream).println(contains("Thank you! Enjoy the movie."));
+    }
+
+    @Test
+    public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulMovieCheckout() {
+        when(userInputStream.getUserInput()).thenReturn("Foo");
+
+        biblioteca.checkoutMovie();
+
+        verify(printStream).println("The movie is not available.");
     }
 }

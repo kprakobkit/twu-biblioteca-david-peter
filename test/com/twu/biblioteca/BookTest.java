@@ -27,7 +27,7 @@ public class BookTest {
 
     @Test
     public void toStringShouldFormatOutputToUseColumns() {
-        assertEquals(book.toString(), "Title                                             |Author              |Year");
+        assertEquals("Title                                             |Author              |Year", book.toString());
     }
 
     @Test
