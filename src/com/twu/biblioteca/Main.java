@@ -1,9 +1,6 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.commands.CheckOutBookCommand;
-import com.twu.biblioteca.commands.Command;
-import com.twu.biblioteca.commands.ListBooksCommand;
-import com.twu.biblioteca.commands.ReturnBookCommand;
+import com.twu.biblioteca.commands.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +10,19 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        Biblioteca biblioteca = new Biblioteca(System.out, books(), new UserInputStream(), new ArrayList<Book>());
+        Biblioteca biblioteca = new Biblioteca(System.out, books(), new UserInputStream(), new ArrayList<Book>(), movies());
         Menu menu = new Menu(System.out, biblioteca, new UserInputStream(), initializeMapMenu(biblioteca));
 
         menu.start();
+    }
+
+    private static List<Movie> movies() {
+        List<Movie> movies = new ArrayList<Movie>();
+        movies.add(new Movie("Guardians of the Galaxy", "2014", "Marvel", 9));
+        movies.add(new Movie("Grand Budapest Hotel", "2013", "Wes Anderson", 10));
+        movies.add(new Movie("Whiplash", "2014", "Someone", 7));
+
+        return movies;
     }
 
     private static Map<String, Command> initializeMapMenu(Biblioteca biblioteca) {
@@ -24,6 +30,7 @@ public class Main {
         mapMenuCommand.put("List Books", new ListBooksCommand(biblioteca));
         mapMenuCommand.put("Checkout Book", new CheckOutBookCommand(biblioteca, System.out));
         mapMenuCommand.put("Return Book", new ReturnBookCommand(biblioteca, System.out));
+        mapMenuCommand.put("List Movies", new ListMoviesCommand(biblioteca));
 
         return mapMenuCommand;
     }

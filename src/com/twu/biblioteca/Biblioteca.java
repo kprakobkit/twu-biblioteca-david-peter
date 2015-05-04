@@ -11,12 +11,14 @@ public class Biblioteca {
     private List<Book> bookList;
     private UserInputStream userInputStream;
     private List<Book> checkedOutBooks;
+    private List<Movie> movieList;
 
-    public Biblioteca(PrintStream printStream, List<Book> books, UserInputStream userInputStream, List<Book> checkedOutBooks) {
+    public Biblioteca(PrintStream printStream, List<Book> books, UserInputStream userInputStream, List<Book> checkedOutBooks, List<Movie> movieList) {
         this.printStream = printStream;
         this.bookList = books;
         this.userInputStream = userInputStream;
         this.checkedOutBooks = checkedOutBooks;
+        this.movieList = movieList;
     }
 
     public void listBooks() {
@@ -64,6 +66,14 @@ public class Biblioteca {
         }
 
         return null;
+    }
+
+    public void listMovies() {
+        int counter = 1;
+        for (Movie movie : movieList) {
+            this.printStream.println(counter + ". " + movie);
+            counter++;
+        }
     }
 }
 

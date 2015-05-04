@@ -25,6 +25,9 @@ public class BibliotecaTest {
     private UserInputStream userInputStream;
     private ArrayList checkedOutBooks;
     private Book book2;
+    private Movie movie1;
+    private Movie movie2;
+    private ArrayList<Movie> movies;
 
     @Before
     public void setUp() {
@@ -32,11 +35,20 @@ public class BibliotecaTest {
         printStream = mock(PrintStream.class);
         book1 = new Book("Title", "Author", "Year");
         book2 = new Book("Title2", "Author", "Year");
+        movie1 = new Movie("Movie1", "Year", "Director", 10);
+        movie2 = new Movie("Movie2", "Year2", "Director", 10);
+
         books = new ArrayList<Book>();
         books.add(book1);
+
         checkedOutBooks = new ArrayList<Book>();
         checkedOutBooks.add(book2);
-        biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutBooks);
+
+        movies = new ArrayList<Movie>();
+        movies.add(movie1);
+        movies.add(movie2);
+
+        biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutBooks, movies);
     }
 
     @Test
@@ -114,5 +126,12 @@ public class BibliotecaTest {
         biblioteca.returnBook();
 
         verify(printStream).println(contains("That is not a valid book to return."));
+    }
+
+    @Test
+    public void shouldListEveryMovie() {
+        biblioteca.listMovies();
+
+        verify(printStream, atLeast(1)).println(contains("Movie"));
     }
 }

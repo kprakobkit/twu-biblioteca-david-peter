@@ -53,9 +53,10 @@ public class MenuTest {
     @Test
     public void shouldStartMenuByDisplayingAllPossibleOptionsUsingCommandMapKeys() {
         when(userInputStream.getUserInput()).thenReturn("Quit");
+
         menu.start();
 
-        verify(printStream).println(contains("Command"));
+        verify(printStream, atLeast(1)).println(contains("Command"));
     }
 
     @Test
@@ -82,7 +83,7 @@ public class MenuTest {
 
         menu.start();
 
-        verify(printStream).println(contains("1."));
+        verify(printStream, atLeast(1)).println(contains("1."));
     }
 
     @Test
@@ -100,7 +101,7 @@ public class MenuTest {
 
         menu.start();
 
-        verify(printStream).println(contains("Quit"));
+        verify(printStream, atLeast(1)).println(contains("Quit"));
     }
 
     @Test

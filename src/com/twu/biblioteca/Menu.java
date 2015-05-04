@@ -35,6 +35,8 @@ public class Menu {
         while (running) {
             String userInput = userInputStream.getUserInput();
             checkUserInput(userInput);
+            printStream.println("---------------------------------------------------------------------------------------");
+            displayMenu();
         }
         printStream.println("Thank you");
     }
@@ -45,7 +47,8 @@ public class Menu {
             printStream.println(counter + ". " + option);
             counter++;
         }
-        printStream.println(counter + ". Quit\n" );
+        printStream.println(counter + ". Quit\n");
+        printStream.print("Enter your option: ");
     }
 
     private void checkUserInput(String userInput) {
