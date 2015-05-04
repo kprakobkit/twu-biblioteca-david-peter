@@ -4,11 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.PrintStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -20,14 +18,14 @@ public class BibliotecaTest {
 
     private PrintStream printStream;
     private Biblioteca biblioteca;
-    private ArrayList<Book> books;
+    private ArrayList<LibraryItem> books;
     private Book book1;
     private UserInputStream userInputStream;
-    private ArrayList checkedOutBooks;
+    private ArrayList checkedOutLibraryItems;
     private Book book2;
     private Movie movie1;
     private Movie movie2;
-    private ArrayList<Movie> movies;
+    private ArrayList<LibraryItem> movies;
 
     @Before
     public void setUp() {
@@ -38,17 +36,17 @@ public class BibliotecaTest {
         movie1 = new Movie("Movie1", "Year", "Director", 10);
         movie2 = new Movie("Movie2", "Year2", "Director", 10);
 
-        books = new ArrayList<Book>();
+        books = new ArrayList<LibraryItem>();
         books.add(book1);
 
-        checkedOutBooks = new ArrayList<Book>();
-        checkedOutBooks.add(book2);
+        checkedOutLibraryItems = new ArrayList<LibraryItem>();
+        checkedOutLibraryItems.add(book2);
 
-        movies = new ArrayList<Movie>();
+        movies = new ArrayList<LibraryItem>();
         movies.add(movie1);
         movies.add(movie2);
 
-        biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutBooks, movies);
+        biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutLibraryItems, movies);
     }
 
     @Test
@@ -80,7 +78,7 @@ public class BibliotecaTest {
 
         biblioteca.checkoutBook();
 
-        assertTrue(checkedOutBooks.contains(book1));
+        assertTrue(checkedOutLibraryItems.contains(book1));
     }
 
     @Test
@@ -133,5 +131,14 @@ public class BibliotecaTest {
         biblioteca.listMovies();
 
         verify(printStream, atLeast(1)).println(contains("Movie"));
+    }
+
+    @Test
+    public void shouldCheckoutSelectedMovie() {
+        when(userInputStream.getUserInput()).thenReturn("Movie1");
+
+        biblioteca.checkoutMovie();
+
+        assertTrue(checkedOutLibraryItems.contains(movie1));
     }
 }

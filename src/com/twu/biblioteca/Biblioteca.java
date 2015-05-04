@@ -8,22 +8,22 @@ import java.util.List;
  */
 public class Biblioteca {
     private PrintStream printStream;
-    private List<Book> bookList;
+    private List<LibraryItem> bookList;
     private UserInputStream userInputStream;
-    private List<Book> checkedOutBooks;
-    private List<Movie> movieList;
+    private List<LibraryItem> checkedOutLibraryItems;
+    private List<LibraryItem> movieList;
 
-    public Biblioteca(PrintStream printStream, List<Book> books, UserInputStream userInputStream, List<Book> checkedOutBooks, List<Movie> movieList) {
+    public Biblioteca(PrintStream printStream, List<LibraryItem> books, UserInputStream userInputStream, List<LibraryItem> checkedOutLibraryItems, List<LibraryItem> movieList) {
         this.printStream = printStream;
         this.bookList = books;
         this.userInputStream = userInputStream;
-        this.checkedOutBooks = checkedOutBooks;
+        this.checkedOutLibraryItems = checkedOutLibraryItems;
         this.movieList = movieList;
     }
 
     public void listBooks() {
         int counter = 1;
-        for (Book book : bookList) {
+        for (LibraryItem book : bookList) {
             this.printStream.println(counter + ". " + book);
             counter++;
         }
@@ -31,10 +31,10 @@ public class Biblioteca {
 
     public void checkoutBook() {
         String bookTitle = userInputStream.getUserInput();
-        Book book;
+        LibraryItem book;
 
         if ((book = retrieveBookByTitleFromList(bookTitle, bookList)) != null) {
-            moveBookBetweenLists(book, bookList, checkedOutBooks);
+            moveBookBetweenLists(book, bookList, checkedOutLibraryItems);
             printStream.println("Thank you! Enjoy the book.");
         } else {
             printStream.println("That book is not available.");
@@ -43,25 +43,25 @@ public class Biblioteca {
 
     public void returnBook() {
         String bookTitle = userInputStream.getUserInput();
-        Book book;
+        LibraryItem book;
 
-        if ((book = retrieveBookByTitleFromList(bookTitle, checkedOutBooks)) != null) {
-            moveBookBetweenLists(book, checkedOutBooks, bookList);
+        if ((book = retrieveBookByTitleFromList(bookTitle, checkedOutLibraryItems)) != null) {
+            moveBookBetweenLists(book, checkedOutLibraryItems, bookList);
             printStream.println("Thank you for returning the book.");
         } else {
             printStream.println("That is not a valid book to return.");
         }
     }
 
-    private void moveBookBetweenLists(Book book, List<Book> fromList, List<Book> toList) {
-        Book checkedOutBook = fromList.remove(fromList.indexOf(book));
+    private void moveBookBetweenLists(LibraryItem book, List<LibraryItem> fromList, List<LibraryItem> toList) {
+        LibraryItem checkedOutBook = fromList.remove(fromList.indexOf(book));
         toList.add(checkedOutBook);
     }
 
-    private Book retrieveBookByTitleFromList(String bookTitle, List<Book> bookList) {
+    private LibraryItem retrieveBookByTitleFromList(String bookTitle, List<LibraryItem> bookList) {
         Book tempBook = new Book(bookTitle, "", "");
 
-        for (Book book : bookList) {
+        for (LibraryItem book : bookList) {
             if (book.equals(tempBook)) return book;
         }
 
@@ -70,7 +70,7 @@ public class Biblioteca {
 
     public void listMovies() {
         int counter = 1;
-        for (Movie movie : movieList) {
+        for (LibraryItem movie : movieList) {
             this.printStream.println(counter + ". " + movie);
             counter++;
         }

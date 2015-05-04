@@ -3,7 +3,7 @@ package com.twu.biblioteca;
 /**
  * Created by kprakobk on 5/3/15.
  */
-public class Movie {
+public class Movie extends LibraryItem {
     private String name;
     private String year;
     private String director;

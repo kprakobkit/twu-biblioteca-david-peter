@@ -19,6 +19,6 @@ public class CheckOutMovieCommand implements Command {
     @Override
     public void execute() {
         printStream.println("Input the movie you would like to checkout? - please enter the title of the movie.");
-        biblioteca.checkoutBook();
+        biblioteca.checkoutMovie();
     }
 }
