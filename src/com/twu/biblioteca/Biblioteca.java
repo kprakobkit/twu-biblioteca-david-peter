@@ -9,14 +9,12 @@ import java.util.List;
 public class Biblioteca {
     private PrintStream printStream;
     private List<LibraryItem> bookList;
-    private UserInputStream userInputStream;
     private List<LibraryItem> checkedOutLibraryItems;
     private List<LibraryItem> movieList;
 
-    public Biblioteca(PrintStream printStream, List<LibraryItem> books, UserInputStream userInputStream, List<LibraryItem> checkedOutLibraryItems, List<LibraryItem> movieList) {
+    public Biblioteca(PrintStream printStream, List<LibraryItem> books, List<LibraryItem> checkedOutLibraryItems, List<LibraryItem> movieList) {
         this.printStream = printStream;
         this.bookList = books;
-        this.userInputStream = userInputStream;
         this.checkedOutLibraryItems = checkedOutLibraryItems;
         this.movieList = movieList;
     }
@@ -29,38 +27,19 @@ public class Biblioteca {
         list(movieList);
     }
 
-    public void checkoutBook() {
-        String bookTitle = userInputStream.getUserInput();
-        LibraryItem book = new Book(bookTitle, "", "");
-
-        processCheckout(book, bookList);
+    public void checkoutBook(LibraryItem book) {
+        checkout(book, bookList);
     }
 
-    public void checkoutMovie() {
-        String movieTitle = userInputStream.getUserInput();
-        LibraryItem movie = new Movie(movieTitle, "", "", 1);
+    public void checkoutMovie(LibraryItem movie) {
+        checkout(movie, movieList);
 
-        processCheckout(movie, movieList);
     }
 
-    private void processCheckout(LibraryItem libraryItem, List<LibraryItem> list) {
-        if (list.contains(libraryItem)) {
-            libraryItem = list.get(list.indexOf(libraryItem));
-            moveBookBetweenLists(libraryItem, list, checkedOutLibraryItems);
-            printStream.println("Thank you! Enjoy the " + libraryItem.getClass().getSimpleName().toLowerCase() + ".");
-            return;
-        }
-
-        printStream.println("The " + libraryItem.getClass().getSimpleName().toLowerCase() + " is not available.");
-    }
-
-    public void returnBook() {
-        String bookTitle = userInputStream.getUserInput();
-        LibraryItem book = new Book(bookTitle, "", "");
-
+    public void returnBook(LibraryItem book) {
         if (checkedOutLibraryItems.contains(book)) {
             book = checkedOutLibraryItems.get(checkedOutLibraryItems.indexOf(book));
-            moveBookBetweenLists(book, checkedOutLibraryItems, bookList);
+            moveItemBetweenLists(book, checkedOutLibraryItems, bookList);
             printStream.println("Thank you for returning the book.");
             return;
         }
@@ -76,8 +55,19 @@ public class Biblioteca {
         }
     }
 
-    private void moveBookBetweenLists(LibraryItem book, List<LibraryItem> fromList, List<LibraryItem> toList) {
-        LibraryItem checkedOutBook = fromList.remove(fromList.indexOf(book));
+    private void checkout(LibraryItem libraryItem, List<LibraryItem> list) {
+        if (list.contains(libraryItem)) {
+            libraryItem = list.get(list.indexOf(libraryItem));
+            moveItemBetweenLists(libraryItem, list, checkedOutLibraryItems);
+            printStream.println("Thank you! Enjoy the " + libraryItem.getClass().getSimpleName().toLowerCase() + ".");
+            return;
+        }
+
+        printStream.println("The " + libraryItem.getClass().getSimpleName().toLowerCase() + " is not available.");
+    }
+
+    private void moveItemBetweenLists(LibraryItem item, List<LibraryItem> fromList, List<LibraryItem> toList) {
+        LibraryItem checkedOutBook = fromList.remove(fromList.indexOf(item));
         toList.add(checkedOutBook);
     }
 }

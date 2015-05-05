@@ -13,7 +13,7 @@ public class Main {
     private static final PrintStream out = System.out;
 
     public static void main(String[] args) {
-        Biblioteca biblioteca = new Biblioteca(out, books(), new UserInputStream(), new ArrayList<LibraryItem>(), movies());
+        Biblioteca biblioteca = new Biblioteca(out, books(), new ArrayList<LibraryItem>(), movies());
         Menu menu = new Menu(out, biblioteca, new UserInputStream(), initializeMapMenu(biblioteca));
 
         menu.start();
@@ -29,12 +29,14 @@ public class Main {
     }
 
     private static Map<String, Command> initializeMapMenu(Biblioteca biblioteca) {
+        UserInputStream userInputStream = new UserInputStream();
+
         Map<String, Command> mapMenuCommand = new HashMap<String, Command>();
         mapMenuCommand.put("List Books", new ListBooksCommand(biblioteca));
-        mapMenuCommand.put("Checkout Book", new CheckOutBookCommand(biblioteca, out));
-        mapMenuCommand.put("Return Book", new ReturnBookCommand(biblioteca, out));
+        mapMenuCommand.put("Checkout Book", new CheckOutBookCommand(biblioteca, out, userInputStream));
+        mapMenuCommand.put("Return Book", new ReturnBookCommand(biblioteca, out, userInputStream));
         mapMenuCommand.put("List Movies", new ListMoviesCommand(biblioteca));
-        mapMenuCommand.put("Checkout Movie", new CheckOutMovieCommand(biblioteca, out));
+        mapMenuCommand.put("Checkout Movie", new CheckOutMovieCommand(biblioteca, out, userInputStream));
 
         return mapMenuCommand;
     }

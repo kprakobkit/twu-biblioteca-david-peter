@@ -18,19 +18,24 @@ public class CheckOutBookCommandTest {
     private Biblioteca biblioteca;
     private PrintStream printStream;
     private CheckOutBookCommand checkOutBookCommand;
+    private UserInputStream userInputStream;
 
     @Before
     public void setUp() throws Exception {
         biblioteca = mock(Biblioteca.class);
         printStream = mock(PrintStream.class);
-        checkOutBookCommand = new CheckOutBookCommand(biblioteca, printStream);
+        userInputStream = mock(UserInputStream.class);
+        checkOutBookCommand = new CheckOutBookCommand(biblioteca, printStream, userInputStream);
     }
 
     @Test
     public void shouldCheckoutBookWhenExecute() {
+        String title = "Book Title";
+        when(userInputStream.getUserInput()).thenReturn(title);
+
         checkOutBookCommand.execute();
 
-        verify(biblioteca).checkoutBook();
+        verify(biblioteca).checkoutBook(new Book(title, "", ""));
     }
 
     @Test

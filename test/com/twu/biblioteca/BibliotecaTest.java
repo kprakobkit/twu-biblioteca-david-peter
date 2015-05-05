@@ -44,9 +44,9 @@ public class BibliotecaTest {
 
         movies = new ArrayList<LibraryItem>();
         movies.add(movie1);
-        movies.add(movie2);
+        checkedOutLibraryItems.add(movie2);
 
-        biblioteca = new Biblioteca(printStream, books, userInputStream, checkedOutLibraryItems, movies);
+        biblioteca = new Biblioteca(printStream, books, checkedOutLibraryItems, movies);
     }
 
     @Test
@@ -64,64 +64,43 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void shouldGetUserInputOnCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("Title");
-
-        biblioteca.checkoutBook();
-
-        verify(userInputStream).getUserInput();
-    }
-
-    @Test
     public void shouldCheckoutSelectedBook() {
-        when(userInputStream.getUserInput()).thenReturn("Title");
-
-        biblioteca.checkoutBook();
+        biblioteca.checkoutBook(book1);
 
         assertTrue(checkedOutLibraryItems.contains(book1));
     }
 
     @Test
     public void shouldDisplaySuccessMessageOnSuccessfulBookCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("Title");
-
-        biblioteca.checkoutBook();
+        biblioteca.checkoutBook(book1);
 
         verify(printStream).println(contains("Thank you! Enjoy the book"));
     }
 
     @Test
     public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulBookCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("Foo");
-
-        biblioteca.checkoutBook();
+        biblioteca.checkoutBook(book2);
 
         verify(printStream).println(contains("The book is not available."));
     }
 
     @Test
     public void shouldReturnSelectedBook() {
-        when(userInputStream.getUserInput()).thenReturn("Title2");
-
-        biblioteca.returnBook();
+        biblioteca.returnBook(book2);
 
         assertTrue(books.contains(book2));
     }
 
     @Test
     public void shouldDisplaySuccessMessageOnSuccessfulReturn() {
-        when(userInputStream.getUserInput()).thenReturn("Title2");
-
-        biblioteca.returnBook();
+        biblioteca.returnBook(book2);
 
         verify(printStream).println(contains("Thank you for returning the book."));
     }
 
     @Test
     public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulReturn() {
-        when(userInputStream.getUserInput()).thenReturn("Foo");
-
-        biblioteca.returnBook();
+        biblioteca.returnBook(book1);
 
         verify(printStream).println(contains("The is not a valid book to return."));
     }
@@ -135,27 +114,21 @@ public class BibliotecaTest {
 
     @Test
     public void shouldCheckoutSelectedMovie() {
-        when(userInputStream.getUserInput()).thenReturn("Movie1");
-
-        biblioteca.checkoutMovie();
+        biblioteca.checkoutMovie(movie1);
 
         assertTrue(checkedOutLibraryItems.contains(movie1));
     }
 
     @Test
     public void shouldDisplaySuccessMessageOnSuccessfulMovieCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("Movie1");
-
-        biblioteca.checkoutMovie();
+        biblioteca.checkoutMovie(movie1);
 
         verify(printStream).println(contains("Thank you! Enjoy the movie."));
     }
 
     @Test
     public void shouldDisplayUnsuccessfulMessageOnUnsuccessfulMovieCheckout() {
-        when(userInputStream.getUserInput()).thenReturn("Foo");
-
-        biblioteca.checkoutMovie();
+        biblioteca.checkoutMovie(movie2);
 
         verify(printStream).println("The movie is not available.");
     }
