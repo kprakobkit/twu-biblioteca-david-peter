@@ -43,6 +43,17 @@ public class Biblioteca {
         processCheckout(movie, movieList);
     }
 
+    private void processCheckout(LibraryItem libraryItem, List<LibraryItem> list) {
+        if (list.contains(libraryItem)) {
+            libraryItem = list.get(list.indexOf(libraryItem));
+            moveBookBetweenLists(libraryItem, list, checkedOutLibraryItems);
+            printStream.println("Thank you! Enjoy the " + libraryItem.getClass().getSimpleName().toLowerCase() + ".");
+            return;
+        }
+
+        printStream.println("The " + libraryItem.getClass().getSimpleName().toLowerCase() + " is not available.");
+    }
+
     public void returnBook() {
         String bookTitle = userInputStream.getUserInput();
         LibraryItem book = new Book(bookTitle, "", "");
@@ -51,19 +62,10 @@ public class Biblioteca {
             book = checkedOutLibraryItems.get(checkedOutLibraryItems.indexOf(book));
             moveBookBetweenLists(book, checkedOutLibraryItems, bookList);
             printStream.println("Thank you for returning the book.");
-        } else {
-            printStream.println("The is not a valid book to return.");
+            return;
         }
-    }
 
-    private void processCheckout(LibraryItem libraryItem, List<LibraryItem> list) {
-        if (list.contains(libraryItem)) {
-            libraryItem = list.get(list.indexOf(libraryItem));
-            moveBookBetweenLists(libraryItem, list, checkedOutLibraryItems);
-            printStream.println("Thank you! Enjoy the " + libraryItem.getClass().getSimpleName().toLowerCase() + ".");
-        } else {
-            printStream.println("The " + libraryItem.getClass().getSimpleName().toLowerCase() + " is not available.");
-        }
+        printStream.println("The is not a valid book to return.");
     }
 
     private void list(List<LibraryItem> itemList) {
