@@ -24,16 +24,16 @@ public class Biblioteca {
     public void listBooks() {
         int counter = 1;
         for (LibraryItem book : bookList) {
-            this.printStream.println(counter + ". " + book);
+            printStream.println(counter + ". " + book);
             counter++;
         }
     }
 
     public void checkoutBook() {
         String bookTitle = userInputStream.getUserInput();
-        LibraryItem book;
+        LibraryItem book = new Book(bookTitle, "", "");
 
-        if ((book = retrieveLibraryItemByTitleFromList(bookTitle, bookList)) != null) {
+        if ((book = retrieveLibraryItemByTitleFromList(book, bookList)) != null) {
             moveBookBetweenLists(book, bookList, checkedOutLibraryItems);
             printStream.println("Thank you! Enjoy the book.");
         } else {
@@ -43,9 +43,9 @@ public class Biblioteca {
 
     public void returnBook() {
         String bookTitle = userInputStream.getUserInput();
-        LibraryItem book;
+        LibraryItem book = new Book(bookTitle, "", "");
 
-        if ((book = retrieveLibraryItemByTitleFromList(bookTitle, checkedOutLibraryItems)) != null) {
+        if ((book = retrieveLibraryItemByTitleFromList(book, checkedOutLibraryItems)) != null) {
             moveBookBetweenLists(book, checkedOutLibraryItems, bookList);
             printStream.println("Thank you for returning the book.");
         } else {
@@ -58,12 +58,9 @@ public class Biblioteca {
         toList.add(checkedOutBook);
     }
 
-    private LibraryItem retrieveLibraryItemByTitleFromList(String itemTitle, List<LibraryItem> libraryItemList) {
-        LibraryItem itemToRetrieve = new Book (itemTitle, "", "") {
-        };
-
+    private LibraryItem retrieveLibraryItemByTitleFromList(LibraryItem itemToFind, List<LibraryItem> libraryItemList) {
         for (LibraryItem libraryItem : libraryItemList) {
-            if (libraryItem.equals(itemToRetrieve)) return libraryItem;
+            if (libraryItem.equals(itemToFind)) return libraryItem;
         }
 
         return null;
@@ -79,9 +76,9 @@ public class Biblioteca {
 
     public void checkoutMovie() {
         String movieTitle = userInputStream.getUserInput();
-        LibraryItem movie;
+        LibraryItem movie = new Movie(movieTitle, "", "", 1);
 
-        if ((movie = retrieveLibraryItemByTitleFromList(movieTitle, movieList)) != null) {
+        if ((movie = retrieveLibraryItemByTitleFromList(movie, movieList)) != null) {
             moveBookBetweenLists(movie, movieList, checkedOutLibraryItems);
             printStream.println("Thank you! Enjoy the movie.");
         } else {
