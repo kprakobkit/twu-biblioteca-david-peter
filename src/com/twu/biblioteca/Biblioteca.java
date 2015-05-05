@@ -25,45 +25,45 @@ public class Biblioteca {
         list(bookList);
     }
 
+    public void listMovies() {
+        list(movieList);
+    }
+
     public void checkoutBook() {
         String bookTitle = userInputStream.getUserInput();
         LibraryItem book = new Book(bookTitle, "", "");
 
-        if ((book = retrieveLibraryItemByTitleFromList(book, bookList)) != null) {
-            moveBookBetweenLists(book, bookList, checkedOutLibraryItems);
-            printStream.println("Thank you! Enjoy the book.");
-        } else {
-            printStream.println("That book is not available.");
-        }
+        processCheckout(book, bookList);
+    }
+
+    public void checkoutMovie() {
+        String movieTitle = userInputStream.getUserInput();
+        LibraryItem movie = new Movie(movieTitle, "", "", 1);
+
+        processCheckout(movie, movieList);
     }
 
     public void returnBook() {
         String bookTitle = userInputStream.getUserInput();
         LibraryItem book = new Book(bookTitle, "", "");
 
-        if ((book = retrieveLibraryItemByTitleFromList(book, checkedOutLibraryItems)) != null) {
+        if (checkedOutLibraryItems.contains(book)) {
+            book = checkedOutLibraryItems.get(checkedOutLibraryItems.indexOf(book));
             moveBookBetweenLists(book, checkedOutLibraryItems, bookList);
             printStream.println("Thank you for returning the book.");
         } else {
-            printStream.println("That is not a valid book to return.");
+            printStream.println("The is not a valid book to return.");
         }
     }
 
-    private void moveBookBetweenLists(LibraryItem book, List<LibraryItem> fromList, List<LibraryItem> toList) {
-        LibraryItem checkedOutBook = fromList.remove(fromList.indexOf(book));
-        toList.add(checkedOutBook);
-    }
-
-    private LibraryItem retrieveLibraryItemByTitleFromList(LibraryItem itemToFind, List<LibraryItem> libraryItemList) {
-        for (LibraryItem libraryItem : libraryItemList) {
-            if (libraryItem.equals(itemToFind)) return libraryItem;
+    private void processCheckout(LibraryItem libraryItem, List<LibraryItem> list) {
+        if (list.contains(libraryItem)) {
+            libraryItem = list.get(list.indexOf(libraryItem));
+            moveBookBetweenLists(libraryItem, list, checkedOutLibraryItems);
+            printStream.println("Thank you! Enjoy the " + libraryItem.getClass().getSimpleName().toLowerCase() + ".");
+        } else {
+            printStream.println("The " + libraryItem.getClass().getSimpleName().toLowerCase() + " is not available.");
         }
-
-        return null;
-    }
-
-    public void listMovies() {
-        list(movieList);
     }
 
     private void list(List<LibraryItem> itemList) {
@@ -74,16 +74,9 @@ public class Biblioteca {
         }
     }
 
-    public void checkoutMovie() {
-        String movieTitle = userInputStream.getUserInput();
-        LibraryItem movie = new Movie(movieTitle, "", "", 1);
-
-        if ((movie = retrieveLibraryItemByTitleFromList(movie, movieList)) != null) {
-            moveBookBetweenLists(movie, movieList, checkedOutLibraryItems);
-            printStream.println("Thank you! Enjoy the movie.");
-        } else {
-            printStream.println("The movie is not available.");
-        }
+    private void moveBookBetweenLists(LibraryItem book, List<LibraryItem> fromList, List<LibraryItem> toList) {
+        LibraryItem checkedOutBook = fromList.remove(fromList.indexOf(book));
+        toList.add(checkedOutBook);
     }
 }
 

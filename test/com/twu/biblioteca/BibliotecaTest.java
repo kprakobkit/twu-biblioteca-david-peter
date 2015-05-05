@@ -96,7 +96,7 @@ public class BibliotecaTest {
 
         biblioteca.checkoutBook();
 
-        verify(printStream).println(contains("That book is not available."));
+        verify(printStream).println(contains("The book is not available."));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class BibliotecaTest {
 
         biblioteca.returnBook();
 
-        verify(printStream).println(contains("That is not a valid book to return."));
+        verify(printStream).println(contains("The is not a valid book to return."));
     }
 
     @Test
