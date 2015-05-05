@@ -22,11 +22,7 @@ public class Biblioteca {
     }
 
     public void listBooks() {
-        int counter = 1;
-        for (LibraryItem book : bookList) {
-            printStream.println(counter + ". " + book);
-            counter++;
-        }
+        list(bookList);
     }
 
     public void checkoutBook() {
@@ -67,9 +63,13 @@ public class Biblioteca {
     }
 
     public void listMovies() {
+        list(movieList);
+    }
+
+    private void list(List<LibraryItem> itemList) {
         int counter = 1;
-        for (LibraryItem movie : movieList) {
-            this.printStream.println(counter + ". " + movie);
+        for (LibraryItem libraryItem : itemList) {
+            printStream.println(counter + ". " + libraryItem);
             counter++;
         }
     }
